@@ -16,6 +16,14 @@ Go to the root directory and run following commands:
 - `mvn spring-boot:run`
 
 ## Communicate with the REST API
+
+> [!IMPORTANT]
+> Basic authorization needed.
+> 
+> **Username**: admin
+> 
+> **Password**: admin
+
 -  `GET http://localhost:8080/processes`
 
    Returns a list of all runnable processes

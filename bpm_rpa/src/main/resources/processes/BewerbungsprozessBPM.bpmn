@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  targetNamespace="http://bpmn.io/schema/bpmn" 
+                  xmlns:activiti="http://activiti.org/bpmn">
+  <bpmn:process id="BewerbungsprozessBPM" name="Bewerbungsprozess ohne RPA" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Bewerbung starten">
+      <bpmn:outgoing>Flow_06g6f1g</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:sequenceFlow id="Flow_06g6f1g" sourceRef="StartEvent_1" targetRef="Activity_hdd93h7f" />
+    <bpmn:serviceTask id="Activity_hdd93h7f" name="Bewerbungeingang prüfen" activiti:class="de.hawhh.knap.bpm_rpa.customTaskServices.BewerbungseingangPruefenDelegate">
+      <bpmn:incoming>Flow_06g6f1g</bpmn:incoming>
+      <bpmn:outgoing>Flow_jd83c3u</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_jd83c3u" sourceRef="Activity_hdd93h7f" targetRef="Gateway_he7332u" />
+    <bpmn:exclusiveGateway id="Gateway_he7332u" name="Bewerbung vorhanden?">
+      <bpmn:incoming>Flow_jd83c3u</bpmn:incoming>
+      <bpmn:outgoing>Flow_4hduwi2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_06gff1g</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_4hduwi2" name="Nein" sourceRef="Gateway_he7332u" targetRef="Event_8ehsvap" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${bewerbung == 0}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_8ehsvap" name="Keine Bewerbung eingegangen">
+      <bpmn:incoming>Flow_4hduwi2</bpmn:incoming>
+    </bpmn:endEvent>
+
+
+    <bpmn:sequenceFlow id="Flow_06gff1g" name="Ja" sourceRef="Gateway_he7332u" targetRef="Activity_1unuuuu" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${bewerbung == 1}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+
+    <bpmn:serviceTask id="Activity_1unuuuu" name="Bewerbung einordnen" activiti:class="de.hawhh.knap.bpm_rpa.customTaskServices.BewerbungEinordnenDelegate">
+      <bpmn:incoming>Flow_06gff1g</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cyovq2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0cyovq2" sourceRef="Activity_1unuuuu" targetRef="Gateway_00v2m1w" />
+    <bpmn:exclusiveGateway id="Gateway_00v2m1w" name="Bewerber:in geeignet?">
+      <bpmn:incoming>Flow_0cyovq2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yhw0gp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_03qdeg0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1royuu2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_03qdeg0" name="Ja" sourceRef="Gateway_00v2m1w" targetRef="Gateway_1lgjjab" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${schnitt == 1}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1yhw0gp" name="Vielleicht" sourceRef="Gateway_00v2m1w" targetRef="Activity_1kt4a2s" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${schnitt == 2}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1royuu2" name="Nein" sourceRef="Gateway_00v2m1w" targetRef="Gateway_1qwz3hf" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${schnitt == 3}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_1kt4a2s" name="Bewerbung evaluieren">
+      <bpmn:extensionElements>
+        <activiti:formProperty id="accepted" name="Bewerbung akzeptieren?" type="char" required="true">
+        </activiti:formProperty>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1yhw0gp</bpmn:incoming>
+      <bpmn:outgoing>Flow_11rtqcn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_11rtqcn" sourceRef="Activity_1kt4a2s" targetRef="Gateway_1rgfutm" />
+    <bpmn:exclusiveGateway id="Gateway_1rgfutm" name="Bewerber akzeptiert?">
+      <bpmn:incoming>Flow_11rtqcn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uh3nbt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_112bk1h</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1uh3nbt" name="Ja" sourceRef="Gateway_1rgfutm" targetRef="Gateway_1lgjjab" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accepted == "J"}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_112bk1h" name="Nein" sourceRef="Gateway_1rgfutm" targetRef="Gateway_1qwz3hf" >
+	    <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accepted == "N"}</bpmn:conditionExpression>
+	  </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1lgjjab">
+      <bpmn:incoming>Flow_1uh3nbt</bpmn:incoming>
+      <bpmn:incoming>Flow_03qdeg0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dj6zwc</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1qwz3hf">
+      <bpmn:incoming>Flow_112bk1h</bpmn:incoming>
+      <bpmn:incoming>Flow_1royuu2</bpmn:incoming>
+      <bpmn:outgoing>Flow_06ljqot</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0dj6zwc" sourceRef="Gateway_1lgjjab" targetRef="Event_1c1kj49" />
+    <bpmn:sequenceFlow id="Flow_06ljqot" sourceRef="Gateway_1qwz3hf" targetRef="Event_1omaucu" />
+    
+    <bpmn:endEvent id="Event_1c1kj49" name="Bewerber:in akzeptiert">
+      <bpmn:incoming>Flow_0dj6zwc</bpmn:incoming>
+    </bpmn:endEvent>
+
+
+    <bpmn:endEvent id="Event_1omaucu" name="Bewerber:in abgelehnt">
+      <bpmn:incoming>Flow_06ljqot</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+</bpmn:definitions>

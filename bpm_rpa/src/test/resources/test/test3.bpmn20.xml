@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+                  targetNamespace="http://www.activiti.org/processdef" xmlns:activiti="http://activiti.org/bpmn">
+    <bpmn:process id="test3" name="Test mit Usertask und Form" isExecutable="true">
+        <bpmn:startEvent id="startEvent" name="startEvent">
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="sequence-flow-1" sourceRef="startEvent" targetRef="B">
+        </bpmn:sequenceFlow>
+        <bpmn:userTask id="B" name="B">
+            <bpmn:extensionElements>
+                <activiti:formProperty id="accepted" name="Bewerbung akzeptieren? (J/N)" type="char" required="true"></activiti:formProperty>
+                <activiti:formProperty id="text" name="text" type="char" required="false"></activiti:formProperty>
+            </bpmn:extensionElements>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="sequence-flow-2" sourceRef="B" targetRef="endEvent">
+        </bpmn:sequenceFlow>
+        <bpmn:endEvent id="endEvent" name="endEvent">
+        </bpmn:endEvent>
+    </bpmn:process>
+</bpmn:definitions>

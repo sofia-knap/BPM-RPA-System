@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+                  targetNamespace="http://www.activiti.org/processdef" xmlns:activiti="http://activiti.org/bpmn">
+    <bpmn:process id="test_bpmn2" name="Test mit RPA" isExecutable="true">
+        <bpmn:startEvent id="startEvent" name="startEvent">
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="sequence-flow-1" sourceRef="startEvent" targetRef="Activiti_js7nf02">
+        </bpmn:sequenceFlow>
+        <bpmn:serviceTask id="Activiti_js7nf02" name="RPA Task" activiti:class="de.hawhh.knap.bpm_rpa.rpa.RpaDelegate">
+            <bpmn:extensionElements>
+                <activiti:field name="robotPath" stringValue="rpaTask" />
+            </bpmn:extensionElements>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="sequence-flow-2" sourceRef="Activiti_js7nf02" targetRef="endEvent">
+        </bpmn:sequenceFlow>
+        <bpmn:endEvent id="endEvent" name="endEvent">
+        </bpmn:endEvent>
+    </bpmn:process>
+</bpmn:definitions>

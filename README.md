@@ -1,6 +1,7 @@
 # BPM-RPA-System
 This repository is part of my bachelorthesis. It contains a rudimentry prototype of a BPM-RPA system. 
 It consists of the BPM process engine [Activiti](https://github.com/Activiti/Activiti) and the robotic process automation tool [Robot Framework](https://github.com/robotframework/robotframework).
+This prototype was implemented in the [Visual Studio Code](https://code.visualstudio.com/) IDE
 
 ## Installation
 1.  Make shure you have Java 21 and Python 2.11.0 installed and added to PATH when using Windows
@@ -11,7 +12,7 @@ It consists of the BPM process engine [Activiti](https://github.com/Activiti/Act
      - run `pip install rpaframework`
 
 ## Run the Application
-Go to the root directory and run following commands: 
+Go to the 'bpm_rpa' directory and run following commands: 
 - `mvn clean install`
 - `mvn spring-boot:run`
 
@@ -53,3 +54,11 @@ Go to the root directory and run following commands:
 
 -  `GET http://localhost:8080/get-completed-processes`
    Returns all completed processes
+
+## Run the Exaple Process 'Bewerbungsprozess'
+1. Start the application
+2. Go to the 'ressource/bewerbung/testBewerbung' where three examplatory processes are stored. One for each outcome of the process.
+3. Edit one of the file and enter a valid e-mail adress
+4. Copy the file into 'ressource/bewerbung'
+5. Start process. Use the commands in the chapter above to communicate with the process engine and to controll the process flow.
+6. Afte the process finished successfully check the mail account for the acception / rejection mail
